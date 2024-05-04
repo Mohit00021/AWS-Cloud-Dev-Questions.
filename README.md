@@ -94,3 +94,45 @@ Resources:
             ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
             ImageId: ami-blablabla
 ```
+### Cloud Formation : Outputs 
+
+Answer: Outputs are optional values which must be exported in order to use them. we can import these values in other stacks! `(To understand the reference of stack here Google how cloud formation works or read this  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html#cfn-concepts-stacks)`, basically a stack is created when a template is used and then the events stored in stack are triggered followed by resources creation.. outputs example -> we can export vpc id from a SSH security stack and ref it in a application stack 
+
+```yaml
+Outputs:
+    SSHSecurityGroup:
+        Description: The ssh security group for our organization
+        Value: !Ref MySSHGroup
+        Export:
+            Name: SSHSecurityGroup
+Resources:
+    MyEC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType: t2.micro
+            ImageId: ami-blablabla
+            SecurityGroups:
+                - !ImportValue SSHSecurityGroup  ------> "fn::ImportValue" is used to import the outputs
+```
+*Note You can only delete outputs if there are no usages of it*
+
+### Cloud Formation: Conditions 
+
+Answer: Create resources based on conditions, logical funtions to be used in Cloud formation conditions fn::AND/IF/EQUALS/OR/NOT. the shortform for these function looks like this "!Equals" this "!" here does not means Not so dont get confused! its a short form of "fn::"
+
+```yaml
+Conditions:
+    CreateProdResource: !Equals [!Ref EnvType, prod]
+```
+
+### Instrinsic Functions in cloud formation
+
+Answer: If you read the above examples you already know a few instrinsic functions.. "!Ref" , "!Equals" "!FindInMap" there are many also cf has a fn::ForEach too! read this -> https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html
+
+
+
+
+
+
+
+
