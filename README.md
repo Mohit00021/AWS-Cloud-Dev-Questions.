@@ -27,3 +27,70 @@ Here are other methods/policies Elastic beanstalks has for deployment: https://d
 
 Answer: EB extensions are used to customize elastic beanstalk environments, basically a user can customize the requirements of eb env beyond the normal eb settings. All the parameters set in UI can be configured using code files in a JSON/YAML format. We can connect external databases too with this.
 
+### Whats AWS Cloud Formation ? 
+
+Answer: Cloud formatino are templates that are written in json or yaml format. basically create resources with different properties by just using code plus you can reuse these templates.
+
+### Whats the type identifier for "Resources" in cloud formation templates
+
+Answer: ***service-provider::service-name::data-type-name***
+
+Example: ![image](https://github.com/Mohit00021/AWS-Cloud-Dev-Questions./assets/53579940/90a09727-af4d-443f-9782-2be1ee3ceb56)
+
+*** Resources example ***
+```yaml
+Resources:
+    MyEC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType: t2.micro
+            ImageId: ami-blablabla
+```
+
+### Cloud formation: What are parameters and when to use them?
+
+Answer: In CF Parameters are parameters(coding). In Cloud Formation we use parameters are a way to provide input to templates. Parameters should be used when resource configuration are likely to be changed in future.
+Parameter can be accessed by using the *"!Ref"* function of aws cloud formation.
+
+Note: !Ref is not limited to parameters only.
+
+Example:
+```yaml
+Parameters:
+    InstanceType:
+        Description: Choose a instance type.
+        Type: String
+        AllowedValues:
+            -t2.micro
+            -t2.small
+            -t2.medium
+        Default: t2.small
+Resources:
+    MyEC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            InstanceType: !Ref InstanceType  -----> "!Ref" is used to access the parameter here
+            ImageId: ami-blablabla
+```
+
+### Cloud Formation: waht are mappings? 
+
+Answer: Mappings are hardcoded variables aka fixed variables in cloud formation templates. We can access Mappings anywhere in template using fn::FindInMap function shortform !FindInMap 
+
+Example:
+```yaml
+Mappings:
+    RegionMap:
+        us-east-1:
+            HVM64: ami-blablabla
+            hVMG2: ami-blalblbla
+        us-west-2:
+            HVM64: ami-blablabla
+            hVMG2: ami-blalblbla
+Resources:
+    MyEC2Instance:
+        Type: AWS::EC2::Instance
+        Properties:
+            ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
+            ImageId: ami-blablabla
+```
