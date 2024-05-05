@@ -16,6 +16,7 @@ https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.htm
 ### What is Amazon SQS?
 
 Answer: Simple queue service... It is used to simplify the integration and separation of distributed software systems using a Queue 
+The queue contains messages, one or more producers can send a message to a queue and one/multiple consumers poll these messages. it's like a buffer between producers and messages
 
 ### What's Traffic splitting? In context with deployments 
 
@@ -27,11 +28,11 @@ Here are other methods/policies Elastic beanstalks has for deployment: https://d
 
 Answer: EB extensions are used to customize elastic beanstalk environments, basically a user can customize the requirements of eb env beyond the normal eb settings. All the parameters set in UI can be configured using code files in a JSON/YAML format. We can connect external databases too with this.
 
-### Whats AWS Cloud Formation ? 
+### What is AWS Cloud Formation? 
 
-Answer: Cloud formatino are templates that are written in json or yaml format. basically create resources with different properties by just using code plus you can reuse these templates.
+Answer: Cloud formations are templates that are written in JSON or YAML format. basically, create resources with different properties by just using code plus you can reuse these templates.
 
-### Whats the type identifier for "Resources" in cloud formation templates
+### What is the type identifier for "Resources" in cloud formation templates
 
 Answer: ***service-provider::service-name::data-type-name***
 
@@ -47,18 +48,18 @@ Resources:
             ImageId: ami-blablabla
 ```
 
-### Cloud formation: What are parameters and when to use them?
+### Cloud formation: What are the parameters and when to use them?
 
-Answer: In CF Parameters are parameters(coding). In Cloud Formation we use parameters are a way to provide input to templates. Parameters should be used when resource configuration are likely to be changed in future.
-Parameter can be accessed by using the *"!Ref"* function of aws cloud formation.
+Answer: In CF Parameters are parameters(coding). In Cloud Formation we use parameters are a way to provide input to templates. Parameters should be used when resource configurations are likely to be changed in the future.
+Parameters can be accessed by using the *"!Ref"* function of AWS cloud formation.
 
-Note: !Ref is not limited to parameters only.
+Note:!Ref is not limited to parameters only.
 
 Example:
 ```yaml
 Parameters:
     InstanceType:
-        Description: Choose a instance type.
+        Description: Choose an instance type.
         Type: String
         AllowedValues:
             -t2.micro
@@ -73,9 +74,9 @@ Resources:
             ImageId: ami-blablabla
 ```
 
-### Cloud Formation: waht are mappings? 
+### Cloud Formation: what are mappings? 
 
-Answer: Mappings are hardcoded variables aka fixed variables in cloud formation templates. We can access Mappings anywhere in template using fn::FindInMap function shortform !FindInMap 
+Answer: Mappings are hardcoded variables aka fixed variables in cloud formation templates. We can access Mappings anywhere in the template using the fn::FindInMap function shortform !FindInMap 
 
 Example:
 ```yaml
@@ -94,9 +95,9 @@ Resources:
             ImageId: !FindInMap [RegionMap, !Ref "AWS::Region", HVM64]
             ImageId: ami-blablabla
 ```
-### Cloud Formation : Outputs 
+### Cloud Formation: Outputs 
 
-Answer: Outputs are optional values which must be exported in order to use them. we can import these values in other stacks! `(To understand the reference of stack here Google how cloud formation works or read this  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html#cfn-concepts-stacks)`, basically a stack is created when a template is used and then the events stored in stack are triggered followed by resources creation.. outputs example -> we can export vpc id from a SSH security stack and ref it in a application stack 
+Answer: Outputs are optional values that must be exported in order to use them. we can import these values into other stacks! `(To understand the reference of stack here Google how cloud formation works or read this  https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-whatis-concepts.html#cfn-concepts-stacks)`, basically a stack is created when a template is used and then the events stored in stack are triggered followed by resources creation.. outputs example -> we can export vpc id from a SSH security stack and ref it in a application stack 
 
 ```yaml
 Outputs:
@@ -118,16 +119,16 @@ Resources:
 
 ### Cloud Formation: Conditions 
 
-Answer: Create resources based on conditions, logical funtions to be used in Cloud formation conditions fn::AND/IF/EQUALS/OR/NOT. the shortform for these function looks like this "!Equals" this "!" here does not means Not so dont get confused! its a short form of "fn::"
+Answer: Create resources based on conditions, and logical functions to be used in Cloud formation conditions fn::AND/IF/EQUALS/OR/NOT. the short form for these functions looks like this "!Equals" this "!" here does not mean Not so don't get confused! it's a short form of "fn::"
 
 ```yaml
 Conditions:
     CreateProdResource: !Equals [!Ref EnvType, prod]
 ```
 
-### Instrinsic Functions in cloud formation
+### Intrinsic Functions in Cloud Formation
 
-Answer: If you read the above examples you already know a few instrinsic functions.. "!Ref" , "!Equals" "!FindInMap" there are many also cf has a fn::ForEach too! read this -> https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html
+Answer: If you read the above examples you already know a few intrinsic functions.. "!Ref" , "!Equals" "!FindInMap" there are many also cf has a fn::ForEach too! read this -> https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference.html
 
 
 
