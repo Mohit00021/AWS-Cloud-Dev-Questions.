@@ -18,6 +18,17 @@ https://docs.aws.amazon.com/apigateway/latest/developerguide/models-mappings.htm
 Answer: Simple queue service... It is used to simplify the integration and separation of distributed software systems using a Queue 
 The queue contains messages, one or more producers can send a message to a queue and one/multiple consumers poll these messages. it's like a buffer between producers and messages
 
+### What is message visibility timeout? in SQS
+
+Answer: Message visibility timeout in SQS is a set amount of time that a message is hidden from other consumers if any one consumer has read the message,
+so the queue has a message one consumer reads, the message will be invisible to the other consumers until the message is processed. If it's not processed in the set time then this message will be visible in the queue and other consumers can read it which will now result in more than one consumer processing the message, The default time a message would be invisible is 30 seconds this can be changed by the consumer by calling **ChangeMessageVisibility** API which will mean that the message needs more time to process and keep it invisible for given time. default value can also be set manually in the SQS settings
+
+### Dead letter queue in SQS?
+
+Answer: Dead letter queues (DLQs) can be called storage for failed messages in SQS (messages that weren't processed successfully). A failed message reappears in the main queue, which can result in an infinite loop if there's a problem with the message itself. It would just keep appearing again and again. To solve this, we can set a threshold value for how many times a message can return to the main queue. With a "MaximumReceive" count set to 3, if the message fails for the 4th time, it would then be sent to the dead letter queue.
+
+Redrive to source feature of DQL: These failed messages can be sent back to the main queue once you fix the root cause of their failure.
+
 ### What's Traffic splitting? In context with deployments 
 
 Answer: In traffic splitting or canary testing the  new application version is deployed on a temporary auto-scaling group.. this temporary autoscaling group would have the same amount of instances the main ASG has (same capacity) the traffic would be split in both the temp and the main ASG (10% - 90%) once the testing is done temp instances are migrated to the main ASG and old version is terminated. 
